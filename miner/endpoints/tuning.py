@@ -263,14 +263,14 @@ async def get_training_repo(task_type: TournamentType) -> TrainingRepoResponse:
 
 def factory_router() -> APIRouter:
     router = APIRouter()
-    router.add_api_route(
-        "/task_offer/",
-        task_offer,
-        tags=["Subnet"],
-        methods=["POST"],
-        response_model=MinerTaskResponse,
-        dependencies=[Depends(blacklist_low_stake), Depends(verify_request)],
-    )
+    # router.add_api_route(
+    #     "/task_offer/",
+    #     task_offer,
+    #     tags=["Subnet"],
+    #     methods=["POST"],
+    #     response_model=MinerTaskResponse,
+    #     dependencies=[Depends(blacklist_low_stake), Depends(verify_request)],
+    # )
 
     router.add_api_route(
         "/task_offer_image/",
