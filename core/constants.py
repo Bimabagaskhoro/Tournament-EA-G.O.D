@@ -4,7 +4,9 @@ from dotenv import load_dotenv
 
 
 load_dotenv()
-
+if os.path.exists(".1.env"):
+    load_dotenv(".1.env")
+    
 VERSION_KEY = 61_000
 # Default NETUID if not set in environment
 DEFAULT_NETUID = 56
