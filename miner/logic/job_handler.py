@@ -144,7 +144,7 @@ def _load_and_modify_config_diffusion(job: DiffusionJob) -> dict:
         with open(cst.CONFIG_TEMPLATE_PATH_DIFFUSION_SDXL, "r") as file:
             config = toml.load(file)
         config["pretrained_model_name_or_path"] = job.model
-        config["train_data_dir"] = f"/dataset/images/{job.job_id}/img/"
+        config["train_data_dir"] = f"/dataset/images/{job.job_id}/img"
         config["huggingface_token"] = cst.HUGGINGFACE_TOKEN
         config["huggingface_repo_id"] = f"{cst.HUGGINGFACE_USERNAME}/{job.expected_repo_name or str(uuid.uuid4())}"
         from subimage.sdxl_config import _load_and_modify_config_diffusion_sdxl
@@ -153,7 +153,7 @@ def _load_and_modify_config_diffusion(job: DiffusionJob) -> dict:
         with open(cst.CONFIG_TEMPLATE_PATH_DIFFUSION_FLUX, "r") as file:
             config = toml.load(file)
         config["pretrained_model_name_or_path"] = f"{cst.CONTAINER_FLUX_PATH}/flux_unet_{job.model.replace('/', '_')}.safetensors"
-        config["train_data_dir"] = f"/dataset/images/{job.job_id}/img/"
+        config["train_data_dir"] = f"/dataset/images/{job.job_id}/img"
         config["huggingface_token"] = cst.HUGGINGFACE_TOKEN
         config["huggingface_repo_id"] = f"{cst.HUGGINGFACE_USERNAME}/{job.expected_repo_name or str(uuid.uuid4())}"
         from subimage.flux_config import _load_and_modify_config_diffusion_flux
