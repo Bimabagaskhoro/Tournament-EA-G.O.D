@@ -190,15 +190,31 @@ async def task_offer(
         # You will want to optimise this as a miner
         global current_job_finish_time
         current_time = datetime.now()
-        if request.task_type not in [TaskType.INSTRUCTTEXTTASK, TaskType.DPOTASK, TaskType.GRPOTASK, TaskType.CHATTASK]:
+        if request.task_type not in [TaskType.INSTRUCTTEXTTASK, TaskType.DPOTASK, TaskType.GRPOTASK]:
             return MinerTaskResponse(
                 message=f"This endpoint only accepts text tasks: "
                 f"{TaskType.INSTRUCTTEXTTASK}, {TaskType.DPOTASK}, {TaskType.GRPOTASK} and {TaskType.CHATTASK}",
                 accepted=False,
             )
 
-        if "llama" not in request.model.lower():
-            return MinerTaskResponse(message="I'm not yet optimised and only accept llama-type jobs", accepted=False)
+        try:
+            from sublogic.task_validation import should_accept_task
+            model_name = request.model.lower()
+            task_type_mapping = {
+                TaskType.INSTRUCTTEXTTASK: "InstructTextTask",
+                TaskType.DPOTASK: "DpoTask", 
+                TaskType.GRPOTASK: "GrpoTask",
+            }
+            validation_task_type = task_type_mapping.get(request.task_type, "InstructTextTask")
+            if hasattr(request, 'model') and request.model:
+                can_accept_gpu = should_accept_task(model_name, validation_task_type)
+                
+                if not can_accept_gpu:
+                    return MinerTaskResponse(message="gpu so small", accepted=False)
+            logger.info(f"Task ACCEPTED: {model_name} ({validation_task_type})")
+            
+        except Exception as e:
+            logger.info("skip")
 
         if current_job_finish_time is None or current_time + timedelta(hours=1) > current_job_finish_time:
             if request.hours_to_complete < 13:
