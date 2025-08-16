@@ -14,6 +14,7 @@ from huggingface_hub import HfApi
 
 from core import constants as cst
 from core.config.config_handler import create_dataset_entry
+from subimage.constants import DIFFUSION_SDXL_REPEATS
 from core.config.config_handler import save_config
 from core.config.config_handler import save_config_toml
 from core.config.config_handler import update_flash_attention
@@ -223,7 +224,7 @@ def start_tuning_container_diffusion(job: DiffusionJob):
     prepare_dataset(
         training_images_zip_path=job.dataset_zip,
         training_images_repeat=(
-            cst.DIFFUSION_SDXL_REPEATS if job.model_type == ImageModelType.SDXL
+            DIFFUSION_SDXL_REPEATS if job.model_type == ImageModelType.SDXL
             else cst.DIFFUSION_FLUX_REPEATS
         ),
         instance_prompt=cst.DIFFUSION_DEFAULT_INSTANCE_PROMPT,
