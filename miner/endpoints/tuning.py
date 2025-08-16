@@ -251,18 +251,25 @@ async def task_offer_image(
         if request.task_type != TaskType.IMAGETASK:
             return MinerTaskResponse(message="This endpoint only accepts image tasks", accepted=False)
 
-        if current_job_finish_time is None or current_time + timedelta(hours=1) > current_job_finish_time:
-            if request.hours_to_complete < 3:
-                logger.info("Accepting the image offer")
-                return MinerTaskResponse(message="Yes. I can do image jobs", accepted=True)
-            else:
-                logger.info("Rejecting offer - too long")
-                return MinerTaskResponse(message="I only accept small jobs", accepted=False)
+        if request.hours_to_complete < 3:
+            logger.info("Accepting the image offer")
+            return MinerTaskResponse(message="Yes. I can do image jobs", accepted=True)
         else:
-            return MinerTaskResponse(
-                message=f"Currently busy with another job until {current_job_finish_time.isoformat()}",
-                accepted=False,
-            )
+            logger.info("Rejecting offer - too long")
+            return MinerTaskResponse(message="I only accept small jobs", accepted=False)
+            
+        # if current_job_finish_time is None or current_time + timedelta(hours=1) > current_job_finish_time:
+        #     if request.hours_to_complete < 3:
+        #         logger.info("Accepting the image offer")
+        #         return MinerTaskResponse(message="Yes. I can do image jobs", accepted=True)
+        #     else:
+        #         logger.info("Rejecting offer - too long")
+        #         return MinerTaskResponse(message="I only accept small jobs", accepted=False)
+        # else:
+        #     return MinerTaskResponse(
+        #         message=f"Currently busy with another job until {current_job_finish_time.isoformat()}",
+        #         accepted=False,
+        #     )
 
     except ValidationError as e:
         logger.error(f"Validation error: {str(e)}")
