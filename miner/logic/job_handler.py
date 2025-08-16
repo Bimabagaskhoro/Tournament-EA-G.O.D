@@ -192,6 +192,7 @@ def create_job_text(
     dataset_type: TextDatasetType,
     file_format: FileFormat,
     expected_repo_name: str | None,
+    hours_to_complete: float
 ):
     return TextJob(
         job_id=job_id,
@@ -200,6 +201,7 @@ def create_job_text(
         dataset_type=dataset_type,
         file_format=file_format,
         expected_repo_name=expected_repo_name,
+        hours_to_complete=hours_to_complete
     )
 
 

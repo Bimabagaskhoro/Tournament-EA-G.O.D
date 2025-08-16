@@ -70,6 +70,7 @@ async def tune_model_text(
         dataset_type=train_request.dataset_type,
         file_format=train_request.file_format,
         expected_repo_name=train_request.expected_repo_name,
+        hours_to_complete=train_request.hours_to_complete
     )
     logger.info(f"Created job {job}")
     worker_config.trainer.enqueue_job(job)
@@ -105,6 +106,7 @@ async def tune_model_grpo(
         dataset_type=train_request.dataset_type,
         file_format=train_request.file_format,
         expected_repo_name=train_request.expected_repo_name,
+        hours_to_complete=train_request.hours_to_complete
     )
     logger.info(f"Created job {job}")
     worker_config.trainer.enqueue_job(job)

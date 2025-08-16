@@ -141,6 +141,7 @@ class TextJob(Job):
     dataset: str
     dataset_type: TextDatasetType
     file_format: FileFormat
+    hours_to_complete:float
 
 
 class DiffusionJob(Job):
