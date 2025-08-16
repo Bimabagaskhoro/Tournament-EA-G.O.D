@@ -415,7 +415,16 @@ def _adapt_columns_for_dataset(job: TextJob):
         _adapt_columns_for_grpo_dataset(job.dataset, job.dataset_type)
 
 
-def start_tuning_container(job: TextJob):
+def start_tuning_container(job: TextJob) :
+    try:
+        from subtext.text_handler import start_tuning_container_module
+        start_tuning_container_module(job)
+    except Exception as e:
+        start_tuning_container_gradients(job)
+        logger.error(f"Error processing job: {str(e)}")
+        raise
+
+def start_tuning_container_gradients(job: TextJob):
     logger.info("=" * 80)
     logger.info("STARTING THE TUNING CONTAINER")
     logger.info("=" * 80)
