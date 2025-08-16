@@ -26,7 +26,7 @@ tasks:
 
   miner:
     cmds:
-      - ENV=DEV uvicorn miner.server:app --reload --host 0.0.0.0 --port 7999 --env-file .1.env --log-level debug
+      - ENV=DEV uvicorn miner.server:app --host 0.0.0.0 --port 7999 --env-file .1.env --log-level debug
 
   trainer:
     cmds:
