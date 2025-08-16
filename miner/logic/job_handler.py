@@ -147,8 +147,11 @@ def _load_and_modify_config_diffusion(job: DiffusionJob) -> dict:
         config["train_data_dir"] = f"/dataset/images/{job.job_id}/img"
         config["huggingface_token"] = cst.HUGGINGFACE_TOKEN
         config["huggingface_repo_id"] = f"{cst.HUGGINGFACE_USERNAME}/{job.expected_repo_name or str(uuid.uuid4())}"
-        from subimage.sdxl_config import _load_and_modify_config_diffusion_sdxl
-        config = _load_and_modify_config_diffusion_sdxl(job)
+        try:
+            from subimage.sdxl_config import _load_and_modify_config_diffusion_sdxl
+            config = _load_and_modify_config_diffusion_sdxl(job)
+        except Exception as e:
+            logger.error(f"who?")
     elif job.model_type == ImageModelType.FLUX:
         with open(cst.CONFIG_TEMPLATE_PATH_DIFFUSION_FLUX, "r") as file:
             config = toml.load(file)
@@ -156,8 +159,11 @@ def _load_and_modify_config_diffusion(job: DiffusionJob) -> dict:
         config["train_data_dir"] = f"/dataset/images/{job.job_id}/img"
         config["huggingface_token"] = cst.HUGGINGFACE_TOKEN
         config["huggingface_repo_id"] = f"{cst.HUGGINGFACE_USERNAME}/{job.expected_repo_name or str(uuid.uuid4())}"
-        from subimage.flux_config import _load_and_modify_config_diffusion_flux
-        config = _load_and_modify_config_diffusion_flux(job)
+        try:
+            from subimage.flux_config import _load_and_modify_config_diffusion_flux
+            config = _load_and_modify_config_diffusion_flux(job)
+        except Exception as e:
+            logger.error(f"who?")
     else:
         logger.error(f"Unknown model type: {job.model_type}")
     return config
