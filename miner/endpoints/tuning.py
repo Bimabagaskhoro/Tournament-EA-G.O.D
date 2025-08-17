@@ -197,24 +197,24 @@ async def task_offer(
                 accepted=False,
             )
 
-        try:
-            from sublogic.task_validation import should_accept_task
-            model_name = request.model.lower()
-            task_type_mapping = {
-                TaskType.INSTRUCTTEXTTASK: "InstructTextTask",
-                TaskType.DPOTASK: "DpoTask", 
-                TaskType.GRPOTASK: "GrpoTask",
-            }
-            validation_task_type = task_type_mapping.get(request.task_type, "InstructTextTask")
-            if hasattr(request, 'model') and request.model:
-                can_accept_gpu = should_accept_task(model_name, validation_task_type)
+        # try:
+        #     from sublogic.task_validation import should_accept_task
+        #     model_name = request.model.lower()
+        #     task_type_mapping = {
+        #         TaskType.INSTRUCTTEXTTASK: "InstructTextTask",
+        #         TaskType.DPOTASK: "DpoTask", 
+        #         TaskType.GRPOTASK: "GrpoTask",
+        #     }
+        #     validation_task_type = task_type_mapping.get(request.task_type, "InstructTextTask")
+        #     if hasattr(request, 'model') and request.model:
+        #         can_accept_gpu = should_accept_task(model_name, validation_task_type)
                 
-                if not can_accept_gpu:
-                    return MinerTaskResponse(message="gpu so small", accepted=False)
-            logger.info(f"Task ACCEPTED: {model_name} ({validation_task_type})")
+        #         if not can_accept_gpu:
+        #             return MinerTaskResponse(message="gpu so small", accepted=False)
+        #     logger.info(f"Task ACCEPTED: {model_name} ({validation_task_type})")
             
-        except Exception as e:
-            logger.info("skip")
+        # except Exception as e:
+        #     logger.info("skip")
 
         if current_job_finish_time is None or current_time + timedelta(hours=1) > current_job_finish_time:
             if request.hours_to_complete < 13:
@@ -297,14 +297,14 @@ def factory_router() -> APIRouter:
         dependencies=[Depends(blacklist_low_stake), Depends(verify_request)],
     )
 
-    router.add_api_route(
-        "/task_offer_image/",
-        task_offer_image,
-        tags=["Subnet"],
-        methods=["POST"],
-        response_model=MinerTaskResponse,
-        dependencies=[Depends(blacklist_low_stake), Depends(verify_request)],
-    )
+    # router.add_api_route(
+    #     "/task_offer_image/",
+    #     task_offer_image,
+    #     tags=["Subnet"],
+    #     methods=["POST"],
+    #     response_model=MinerTaskResponse,
+    #     dependencies=[Depends(blacklist_low_stake), Depends(verify_request)],
+    # )
 
     router.add_api_route(
         "/get_latest_model_submission/{task_id}",
