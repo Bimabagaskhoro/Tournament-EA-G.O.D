@@ -178,7 +178,7 @@ class TrainingWorker:
         else:
             # In legacy mode, we can only cancel if it's not running
             job = self.job_store.get(job_id)
-            if job and job.status in [JobStatus.PENDING, JobStatus.NOT_FOUND]:
+            if job and job.status in [JobStatus.QUEUED, JobStatus.NOT_FOUND]:
                 job.status = JobStatus.FAILED
                 job.error_message = "Cancelled by user"
                 return True
